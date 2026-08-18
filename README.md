@@ -4,10 +4,18 @@ GitOps desired state for the OpenTelemetry Demo running on the local kind
 cluster. This repository is the local counterpart to `otel-demo-gitops`, which
 remains dedicated to AWS.
 
+See the
+[AWS and local project walkthrough](https://github.com/lackito/otel-demo-local/blob/main/docs/PROJECT_WALKTHROUGH.md)
+for the shared source-to-Argo CD delivery model.
+
 ## Repository structure
 
 ```text
 otel-demo-gitops-local/
+├── argocd/
+│   └── applications/
+│       └── otel-demo.yaml
+│
 └── applications/
     └── otel-demo/
         ├── values.yaml
@@ -16,15 +24,17 @@ otel-demo-gitops-local/
             └── httproute.yaml
 ```
 
-The local Terraform source repository, `otel-demo-local`, installs Argo CD and
-registers an Application that watches `applications/otel-demo` on `main`.
-Argo CD combines the pinned upstream OpenTelemetry Demo Helm chart with this
+The local Terraform source repository, `otel-demo-local`, installs Argo CD in
+its platform stage and registers an Application from its separate applications
+stage. That Application watches `applications/otel-demo` on `main`. Argo CD
+combines the pinned upstream OpenTelemetry Demo Helm chart with this
 repository's values and local Gateway API resources.
 
 ## Responsibilities
 
 This repository owns:
 
+- the declarative local Argo CD Application definition;
 - local Helm value overrides;
 - the local `Gateway` and `HTTPRoute`;
 - immutable local Recommendation image selection.
