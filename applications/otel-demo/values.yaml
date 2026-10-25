@@ -49,7 +49,7 @@ components:
     # Local CI replaces these fields with a full-SHA GHCR image.
     imageOverride:
       repository: ghcr.io/lackito/otel-demo-local-recommendation
-      tag: 4529f2318533276792452178c41b51e6655f7970
+      tag: 65365294e879d28cd265a4c50896110ce526156c
       pullPolicy: IfNotPresent
 
   flagd:
