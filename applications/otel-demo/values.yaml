@@ -62,3 +62,8 @@ components:
       repository: ghcr.io/lackito/otel-demo-local-product-catalog
       tag: 4529f2318533276792452178c41b51e6655f7970
       pullPolicy: IfNotPresent
+  ad:
+    imageOverride:
+      repository: ghcr.io/lackito/otel-demo-local-ad
+      tag: 4529f2318533276792452178c41b51e6655f7970
+      pullPolicy: IfNotPresent
