@@ -57,3 +57,8 @@ components:
     # environment, both natively and through amd64 emulation. Keep the flagd
     # evaluation service and manage its flag document declaratively instead.
     sidecarContainers: []
+  product-catalog:
+    imageOverride:
+      repository: ghcr.io/lackito/otel-demo-local-product-catalog
+      tag: 4529f2318533276792452178c41b51e6655f7970
+      pullPolicy: IfNotPresent
