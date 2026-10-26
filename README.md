@@ -56,8 +56,8 @@ repository credentials must be configured in the local Argo CD installation.
 Traces are exported to Jaeger, metrics to Prometheus, and application logs to
 OpenSearch. In Grafana, open Explore and choose the OpenSearch data source to
 search `otel-logs-*`. The local data source uses a daily index pattern so the
-Grafana plugin resolves concrete index names for health checks. Its provisioning
-version supersedes the chart's wildcard definition. The Collector also prints
+Grafana plugin resolves concrete index names for health checks. All three data sources are provisioned together from local values so the
+upstream wildcard definition cannot overwrite it. The Collector also prints
 basic batch summaries.
 
 OpenSearch runs as one local node with zero replicas, a 400 MiB Java heap, a 768 MiB memory

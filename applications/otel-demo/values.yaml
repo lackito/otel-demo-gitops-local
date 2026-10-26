@@ -45,10 +45,63 @@ grafana:
       limits:
         cpu: 100m
         memory: 128Mi
+    datasources:
+      enabled: false
   resources:
     limits:
       memory: 384Mi
 
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          uid: webstore-metrics
+          type: prometheus
+          url: http://prometheus:9090
+          editable: true
+          isDefault: true
+          jsonData:
+      # Align Prometheus data source time interval with the OTel SDKs' export interval (see OTEL_METRIC_EXPORT_INTERVAL)
+            timeInterval: 60s
+            exemplarTraceIdDestinations:
+              - datasourceUid: webstore-traces
+                name: trace_id
+
+              - url: http://localhost:8080/jaeger/ui/trace/$${__value.raw}
+                name: trace_id
+                urlDisplayLabel: View in Jaeger UI
+        - name: Jaeger
+          uid: webstore-traces
+          type: jaeger
+          url: http://jaeger:16686/jaeger/ui
+          editable: true
+          isDefault: false
+          jsonData:
+            tracesToLogsV2:
+              datasourceUid: webstore-logs
+              spanStartTimeShift: -20m
+              spanEndTimeShift: 20m
+              filterByTraceID: true
+              filterBySpanID: true
+              customQuery: true
+              query: traceId:"$${__trace.traceId}" AND spanId:"$${__span.spanId}"
+        - name: OpenSearch
+          uid: webstore-logs
+          type: grafana-opensearch-datasource
+          url: http://opensearch:9200/
+          access: proxy
+          editable: true
+          isDefault: false
+          jsonData:
+            database: '[otel-logs-]YYYY-MM-DD'
+            flavor: opensearch
+            logLevelField: severity.text.keyword
+            logMessageField: body
+            pplEnabled: true
+            timeField: observedTimestamp
+            version: 3.2.0
+            interval: Daily
 opensearch:
   enabled: true
   config:
