@@ -50,3 +50,11 @@ CD then detects the commit and reconciles the kind cluster.
 
 The GitHub repository must be public for anonymous Argo CD access, or private
 repository credentials must be configured in the local Argo CD installation.
+
+## Local telemetry
+
+Traces are exported to Jaeger and metrics to Prometheus. OpenSearch is disabled
+to keep the kind cluster lightweight. The Collector's logs pipeline uses only
+the debug exporter at basic verbosity, which prints batch summaries rather than
+full log records. There is no searchable log backend in this configuration.
+Application container logs remain available through `kubectl logs`.
