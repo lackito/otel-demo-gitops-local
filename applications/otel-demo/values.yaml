@@ -51,6 +51,11 @@ grafana:
 
 opensearch:
   enabled: true
+  config:
+    opensearch.yml: |
+      cluster.name: demo-cluster
+      network.host: 0.0.0.0
+      cluster.default_number_of_replicas: 0
   # Single-node, ephemeral storage and a 400 MiB heap are inherited from the
   # pinned demo chart. Reserve realistic memory while keeping startup CPU free.
   resources:

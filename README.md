@@ -57,7 +57,7 @@ Traces are exported to Jaeger, metrics to Prometheus, and application logs to
 OpenSearch. In Grafana, open Explore and choose the OpenSearch data source to
 search `otel-logs-*`. The Collector also prints basic batch summaries.
 
-OpenSearch runs as one local node with a 400 MiB Java heap, a 768 MiB memory
+OpenSearch runs as one local node with zero replicas, a 400 MiB Java heap, a 768 MiB memory
 request, and a 1,100 MiB memory limit. Storage is ephemeral: recreating its pod
 removes indexed logs. This is a local demo configuration with the security plugin
 disabled and no external OpenSearch ingress.
