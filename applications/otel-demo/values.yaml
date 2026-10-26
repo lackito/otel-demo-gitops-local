@@ -9,8 +9,8 @@ opentelemetry-collector:
     service:
       pipelines:
         logs:
-          # OpenSearch is disabled locally; keep only lightweight diagnostics.
-          exporters: [debug]
+          # Store application logs locally and retain basic Collector diagnostics.
+          exporters: [opensearch, debug]
   resources:
     limits:
       memory: 300Mi
@@ -50,7 +50,15 @@ grafana:
       memory: 384Mi
 
 opensearch:
-  enabled: false
+  enabled: true
+  # Single-node, ephemeral storage and a 400 MiB heap are inherited from the
+  # pinned demo chart. Reserve realistic memory while keeping startup CPU free.
+  resources:
+    requests:
+      cpu: 500m
+      memory: 768Mi
+    limits:
+      memory: 1100Mi
 
 components:
   recommendation:

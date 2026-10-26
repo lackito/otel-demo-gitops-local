@@ -53,8 +53,27 @@ repository credentials must be configured in the local Argo CD installation.
 
 ## Local telemetry
 
-Traces are exported to Jaeger and metrics to Prometheus. OpenSearch is disabled
-to keep the kind cluster lightweight. The Collector's logs pipeline uses only
-the debug exporter at basic verbosity, which prints batch summaries rather than
-full log records. There is no searchable log backend in this configuration.
-Application container logs remain available through `kubectl logs`.
+Traces are exported to Jaeger, metrics to Prometheus, and application logs to
+OpenSearch. In Grafana, open Explore and choose the OpenSearch data source to
+search `otel-logs-*`. The Collector also prints basic batch summaries.
+
+OpenSearch runs as one local node with a 400 MiB Java heap, a 768 MiB memory
+request, and a 1,100 MiB memory limit. Storage is ephemeral: recreating its pod
+removes indexed logs. This is a local demo configuration with the security plugin
+disabled and no external OpenSearch ingress.
+
+To inspect the OpenSearch API locally:
+
+```sh
+kubectl --context kind-otel-demo-local -n opentelemetry-demo   port-forward svc/opensearch 9200:9200
+```
+
+In another terminal:
+
+```sh
+curl 'http://localhost:9200/_cluster/health?pretty'
+curl 'http://localhost:9200/_cat/indices/otel-logs-*?v'
+curl 'http://localhost:9200/otel-logs-*/_search?size=1&pretty'
+```
+
+Application container logs also remain available through `kubectl logs`.
