@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-opensearch-local
+  namespace: opentelemetry-demo
+  labels:
+    grafana_datasource: "1"
+data:
+  local-opensearch.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: OpenSearch
+        uid: webstore-logs
+        type: grafana-opensearch-datasource
+        url: http://opensearch:9200/
+        access: proxy
+        editable: true
+        isDefault: false
+        # Supersede the upstream version-1 wildcard definition on each reload.
+        version: 2
+        jsonData:
+          database: "[otel-logs-]YYYY-MM-DD"
+          interval: Daily
+          flavor: opensearch
+          logLevelField: severity.text.keyword
+          logMessageField: body
+          pplEnabled: true
+          timeField: observedTimestamp
+          version: 3.2.0
