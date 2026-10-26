@@ -63,7 +63,9 @@ basic batch summaries.
 OpenSearch runs as one local node with zero replicas, a 400 MiB Java heap, a 768 MiB memory
 request, and a 1,100 MiB memory limit. Storage is ephemeral: recreating its pod
 removes indexed logs. This is a local demo configuration with the security plugin
-disabled and no external OpenSearch ingress.
+disabled and no external OpenSearch ingress. A small Argo CD PostSync job applies
+a zero-replica template to future log indices and updates existing log indices.
+This keeps the log index healthy on one node without allocating a second node.
 
 To inspect the OpenSearch API locally:
 
