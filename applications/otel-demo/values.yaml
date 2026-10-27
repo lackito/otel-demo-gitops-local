@@ -142,3 +142,31 @@ components:
       repository: ghcr.io/lackito/otel-demo-local-ad
       tag: 4529f2318533276792452178c41b51e6655f7970
       pullPolicy: IfNotPresent
+  frontend:
+    # 65 minutes exceeds Envoy's one-hour upstream idle timeout.
+    envOverrides:
+      - name: KEEP_ALIVE_TIMEOUT
+        value: '3900000'
+  image-provider:
+    mountedConfigMaps:
+      - name: local-feature-page
+        mountPath: /static/feature-editor-disabled.html
+        subPath: feature-editor-disabled.html
+        data:
+          feature-editor-disabled.html: |
+            <!doctype html>
+            <html lang="en">
+            <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+              <title>Feature flags — local demo</title>
+              <style>body { font: 1rem system-ui, sans-serif; max-width: 42rem; margin: 4rem auto; padding: 0 1rem; line-height: 1.6; }</style>
+            </head>
+            <body>
+              <main>
+                <h1>Feature flag editor is disabled</h1>
+                <p>This local demo manages feature flags through GitOps. Existing feature flags continue to work.</p>
+                <p><a href="/">Return to the storefront</a></p>
+              </main>
+            </body>
+            </html>

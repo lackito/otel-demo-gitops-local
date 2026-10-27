@@ -82,3 +82,15 @@ curl 'http://localhost:9200/otel-logs-*/_search?size=1&pretty'
 ```
 
 Application container logs also remain available through `kubectl logs`.
+
+## Frontend routing
+
+The frontend keeps upstream HTTP connections alive for 65 minutes, longer than
+Envoy's default one-hour idle timeout. This avoids reusing connections that
+Next.js has already closed. The standalone frontend image reads the
+`KEEP_ALIVE_TIMEOUT` environment variable in milliseconds.
+
+The flag editor remains disabled locally. Requests to `/feature` and
+`/feature/` are served by the existing image-provider as an explanatory page,
+rather than being forwarded to the absent editor. The flagd evaluation service
+and `/flagservice/` route remain available.
